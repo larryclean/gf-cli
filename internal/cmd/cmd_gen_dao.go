@@ -250,11 +250,11 @@ func doGenDaoForArray(ctx context.Context, index int, in commandGenDaoInput) {
 			ModName:            modName,
 		})
 	}
-	// Dto.
-	generateDto(ctx, db, tableNames, newTableNames, commandGenDaoInternalInput{
-		commandGenDaoInput: in,
-		ModName:            modName,
-	})
+	//// Dto.
+	//generateDto(ctx, db, tableNames, newTableNames, commandGenDaoInternalInput{
+	//	commandGenDaoInput: in,
+	//	ModName:            modName,
+	//})
 	// Entity.
 	generateEntity(ctx, db, tableNames, newTableNames, commandGenDaoInternalInput{
 		commandGenDaoInput: in,

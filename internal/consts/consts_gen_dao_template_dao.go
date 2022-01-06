@@ -39,6 +39,7 @@ import (
 	"context"
 	"github.com/gogf/gf/v2/database/gdb"
 	"github.com/gogf/gf/v2/frame/g"
+"github.com/gogf/gf/v2/util/gconv"
 )
 
 // {TplTableNameCamelCase}Dao is the data access object for table {TplTableName}.
@@ -68,7 +69,7 @@ func New{TplTableNameCamelCase}Dao() *{TplTableNameCamelCase}Dao {
 }
 
 // DB retrieves and returns the underlying raw database management object of current DAO.
-func (dao *{TplTableNameCamelCase}Dao) DB() gdb.DB {
+func (dao *{TplTableNameCamelCase}Dao) db() gdb.DB {
 	return g.DB(dao.group)
 }
 
@@ -89,7 +90,12 @@ func (dao *{TplTableNameCamelCase}Dao) Group() string {
 
 // Ctx creates and returns the Model for current DAO, It automatically sets the context for current operation.
 func (dao *{TplTableNameCamelCase}Dao) Ctx(ctx context.Context) *gdb.Model {
-	return dao.DB().Model(dao.table).Safe().Ctx(ctx)
+	// 是否开启Saas模式
+	tenantCode := gconv.String(ctx.Value("TENANT_CODE"))
+	if tenantCode != "" {
+		return dao.db().Schema(tenantCode).Model(dao.table).Safe().Ctx(ctx)
+	}
+	return dao.db().Model(dao.table).Safe().Ctx(ctx)
 }
 
 // Transaction wraps the transaction logic using function f.
